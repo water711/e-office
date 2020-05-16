@@ -108,6 +108,9 @@ class OaTest(object):
 
         if self.step == 1:
 
+            # 等待页面加载完成
+            WebDriverWait(self.driver, 60).until(lambda driver: driver.find_element_by_xpath("//*[text()='提交']"))
+
             # 表单提交
             self.driver.execute_script(
                 "document.getElementsByTagName('button')[1].click()")
@@ -125,7 +128,7 @@ class OaTest(object):
         else:
             self.driver.find_element_by_xpath(
                 ElePath.flow_submit_1_xpath).click()
-            time.sleep(3)
+            time.sleep(6)
             try:
                 if ('没有满足出口条件的节点，请与系统管理员联系！' in driver.page_source):
                     print('没有满足出口条件的节点，请与系统管理员联系！')
@@ -169,7 +172,7 @@ class OaTest(object):
         ele.click()
 
         # 切换到第2个窗口
-        self.driver.switch_to_window(self.driver.window_handles[1]) 
+        self.driver.switch_to.window(self.driver.window_handles[1]) 
 
         # 获取当前浏览器窗口的url地址
         self.flow_url = self.driver.current_url  
@@ -177,7 +180,7 @@ class OaTest(object):
         self.driver.close()
 
         # 切换回第1个窗口
-        self.driver.switch_to_window(self.driver.window_handles[0])  
+        self.driver.switch_to.window(self.driver.window_handles[0])  
 
     def approval_flow(self, user):
         '''
@@ -192,7 +195,7 @@ class OaTest(object):
         time.sleep(1)
 
         # 切换到流程页面所在窗口
-        self.driver.switch_to_window(self.driver.window_handles[1])
+        self.driver.switch_to.window(self.driver.window_handles[1])
 
         # 审核同意
         agree = WebDriverWait(self.driver, 999).until(
@@ -207,8 +210,8 @@ class OaTest(object):
 
         self.submit_flow()
 
-        # 切换窗口
-        self.driver.switch_to_window(self.driver.window_handles[0])
+        # 切换回第1窗口（首页）
+        self.driver.switch_to.window(self.driver.window_handles[0])
 
         # 打开该流程页面，检测该流程是否已经结束
         self.driver.get(self.flow_url)
@@ -228,5 +231,5 @@ class OaTest(object):
 
 
 # (流程ID, 流程发起人)
-test = OaTest(70, '张三')  
+test = OaTest(70, '张三')
 test.run()
